@@ -65,37 +65,61 @@ class EvaluationController extends Controller
         $class_test->setTitle('1. If class tests were done')
         ->addData([$students->where('class_test', 1)->count(), $students->where('class_test', 2)->count()])
         ->setLabels(['Not Done', 'Done'])
-            ->setColors(['#ff6384', '#ffc63b']);
+            ->setColors(['#f9627d', '#4de38e']);
 
         $assignment = new PieChart();
         $assignment->setTitle('2. If assignments were done')
             ->addData([$students->where('assignment', 1)->count(), $students->where('assignment', 2)->count()])
             ->setLabels(['Not Done', 'Done'])
-            ->setColors(['#2a9d8f', '#023047']);
+            ->setColors(['#f9627d', '#4de38e']);
 
         $corrections = new PieChart();
         $corrections->setTitle('3. If corrections were done')
             ->addData([$students->where('correction', 1)->count(), $students->where('correction', 2)->count()])
             ->setLabels(['Not Done', 'Done'])
-            ->setColors(['#0077b6', '#fca311']);
+            ->setColors(['#f9627d', '#4de38e']);
 
         $tests_returned = new PieChart();
         $tests_returned->setTitle('4. If tests were returned')
             ->addData([$students->where('test_returned', 1)->count(), $students->where('test_returned', 2)->count(), $students->where('test_returned', 3)->count(), $students->where('test_returned', 4)->count(), $students->where('test_returned', 5)->count()])
-            ->setLabels(['Never', 'Sometimes', 'Returned', 'Much', 'Everytime'])
-            ->setColors(['#774936', '#ef476f', '#0077b6', '#fca311'. '#2a9d8f']);
+            ->setLabels(['Never', 'Rarely', 'Sometimes', 'Frequently', 'Everytime'])
+            ->setColors(['#f9627d', '#bde0fe', '#0077b6', '#ffdd00', '#4de38e']);
 
         $understanding = new PieChart();
         $understanding->setTitle('5. Understanding Level')
             ->addData([$students->where('understanding', 1)->count(), $students->where('understanding', 2)->count(), $students->where('understanding', 3)->count()])
             ->setLabels(['Not Understood', 'Understood', 'Well Understood'])
-            ->setColors(['#2a9d8f', '#ef476f', '#0077b6']);
+            ->setColors(['#f9627d', '#ffdd00', '#4de38e']);
 
         $material_available = new PieChart();
         $material_available->setTitle('6. Availability of Materials')
             ->addData([$students->where('material_available', 1)->count(), $students->where('material_available', 2)->count()])
             ->setLabels(['Not Available', 'Available'])
-            ->setColors(['#ffc63b', '#2a9d8f']);
+            ->setColors(['#f9627d', '#4de38e']);
+
+        $well_organized = new PieChart();
+        $well_organized->setTitle('7. If the course is well organized')
+            ->addData([$students->where('well_organized', 1)->count(), $students->where('well_organized', 2)->count()])
+            ->setLabels(['Not Organized', 'Organized'])
+            ->setColors(['#f9627d', '#4de38e']);
+
+        $recommend = new PieChart();
+        $recommend->setTitle('8. Recommend the course to coming students')
+            ->addData([$students->where('recommend', 1)->count(), $students->where('recommend', 2)->count()])
+            ->setLabels(['No', 'Yes'])
+            ->setColors(['#f9627d', '#4de38e']);
+
+        $meet_expectations = new PieChart();
+        $meet_expectations->setTitle('9. If the course meets expectations')
+            ->addData([$students->where('meet_expectations', 1)->count(), $students->where('meet_expectations', 2)->count()])
+            ->setLabels(['No', 'Yes'])
+            ->setColors(['#f9627d', '#4de38e']);
+
+        $helpful = new PieChart();
+        $helpful->setTitle('10. Helpful in progressing towards study')
+            ->addData([$students->where('helpful', 1)->count(), $students->where('helpful', 2)->count()])
+            ->setLabels(['Not Helpful', 'Helpful'])
+            ->setColors(['#f9627d', '#4de38e']);
 
         $data = [
             'class_test' => $class_test,
@@ -104,6 +128,10 @@ class EvaluationController extends Controller
             'test_returned' => $tests_returned,
             'understanding' => $understanding,
             'material_available' => $material_available,
+            'well_organized' => $well_organized,
+            'recommend' => $recommend,
+            'meet_expectations' => $meet_expectations,
+            'helpful' => $helpful,
         ];
 
         return view('hod.evaluations.show', compact('course', 'data', 'studentEv'));

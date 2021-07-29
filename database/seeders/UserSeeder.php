@@ -37,6 +37,7 @@ class UserSeeder extends Seeder
             ['role_id' => 2, 'email' => 'mariam@gmail.com', 'password' => Hash::make('123456789')],
             ['role_id' => 2, 'email' => 'julius@gmail.com', 'password' => Hash::make('123456789')],
 
+
             //Lecturers
             ['role_id' => 3, 'email' => 'sarah@mocu.ac.tz', 'password' => Hash::make('123456789')],
             ['role_id' => 3, 'email' => 'mjema@mocu.ac.tz', 'password' => Hash::make('123456789')],
@@ -51,6 +52,11 @@ class UserSeeder extends Seeder
             ['role_id' => 3, 'email' => 'Mariki@mocu.ac.tz', 'password' => Hash::make('123456789')],
             //DVCs
             ['role_id' => 5, 'email' => 'dvca@ces.com', 'password' => Hash::make('123456789')],
+
+            ['role_id' => 2, 'email' => 'brenda@gmail.com', 'password' => Hash::make('123456789')],
+            ['role_id' => 2, 'email' => 'vivian@gmail.com', 'password' => Hash::make('123456789')],
+            ['role_id' => 2, 'email' => 'salehe@gmail.com', 'password' => Hash::make('123456789')],
+            ['role_id' => 2, 'email' => 'zawadi@gmail.com', 'password' => Hash::make('123456789')],
         ];
 
         foreach ($users as $user) {

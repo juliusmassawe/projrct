@@ -45,14 +45,14 @@
                                 <td><span class="badge @if($course->nature == "Core") badge-primary @else badge-success @endif">{{$course->nature}}</span></td>
                                 <td>
                                     @if($lecturerEv[$course->id] >= 1)
-                                        <i class="fas fa-check-circle text-success fa-2x"></i>
+                                        <i class="fas fa-check-circle text-success"></i>
                                     @else
-                                        <i class="fas fa-times-circle text-danger fa-2x"></i>
+                                        <i class="fas fa-times-circle text-danger "></i>
                                     @endif
                                 </td>
                                 <td>
                                      <div class="progress">
-                                        <div class="progress-bar" role="progressbar"  style="width: {{$studentEv[$course->id]}}%" aria-valuenow="{{$studentEv[$course->id]}}" aria-valuemin="0" aria-valuemax="100">
+                                        <div  class="progress-bar @if($studentEv[$course->id] <= 30) bg-danger @elseif($studentEv[$course->id] > 30 && $studentEv[$course->id] <= 60) bg-warning @elseif($studentEv[$course->id] > 60 && $studentEv[$course->id] <= 80) bg-info @else bg-success @endif"  style="width: {{$studentEv[$course->id]}}%" aria-valuenow="{{$studentEv[$course->id]}}" aria-valuemin="0" aria-valuemax="100">
                                             {{$studentEv[$course->id]}}%
                                         </div>
                                     </div>
