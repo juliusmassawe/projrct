@@ -3,16 +3,19 @@
 namespace App\Http\Controllers\HOD;
 
 use App\Http\Controllers\Controller;
-use App\Models\Lecturer\Lecturer;
+use App\Models\HOD\Remark;
 use Illuminate\Http\Request;
 
-class LecturerController extends Controller
+class RemarkController extends Controller
 {
-
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
     public function index()
     {
-        $lecturers = Lecturer::with('level')->where('department_id', auth()->user()->head_of_department->department_id)->paginate(5);
-        return view('hod.lecturers.index', compact('lecturers'));
+        //
     }
 
     /**
@@ -39,10 +42,10 @@ class LecturerController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Lecturer\Lecturer  $lecturer
+     * @param  \App\Models\HOD\Remark  $remark
      * @return \Illuminate\Http\Response
      */
-    public function show(Lecturer $lecturer)
+    public function show(Remark $remark)
     {
         //
     }
@@ -50,10 +53,10 @@ class LecturerController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Lecturer\Lecturer  $lecturer
+     * @param  \App\Models\HOD\Remark  $remark
      * @return \Illuminate\Http\Response
      */
-    public function edit(Lecturer $lecturer)
+    public function edit(Remark $remark)
     {
         //
     }
@@ -62,10 +65,10 @@ class LecturerController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Lecturer\Lecturer  $lecturer
+     * @param  \App\Models\HOD\Remark  $remark
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Lecturer $lecturer)
+    public function update(Request $request, Remark $remark)
     {
         //
     }
@@ -73,10 +76,10 @@ class LecturerController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Lecturer\Lecturer  $lecturer
+     * @param  \App\Models\HOD\Remark  $remark
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Lecturer $lecturer)
+    public function destroy(Remark $remark)
     {
         //
     }

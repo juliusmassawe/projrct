@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Course;
 use App\Models\Lecturer\LecturerEvaluation;
 use App\Models\Programme;
+use App\Models\Student\StudentEvaluation;
 use ArielMejiaDev\LarapexCharts\BarChart;
 use ArielMejiaDev\LarapexCharts\LarapexChart;
 use ArielMejiaDev\LarapexCharts\PieChart;
@@ -50,6 +51,7 @@ class EvaluationController extends Controller
     {
         $course = Course::find($id);
         $students =  $course->studentEvaluations->where('academic_year', session()->get('academic_year'));
+        $lecturers =  $course->lecturerEvaluations->where('academic_year', session()->get('academic_year'))->first();
 
         $evaluations = $course->studentEvaluations->where('academic_year', session()->get('academic_year'))->where('course_id', $course->id)->count();
         $students_count = $course->programme->students()->where('current_semester', $course->sem)->where('current_academic_year', $this->current_academic_year())->count();
@@ -121,20 +123,207 @@ class EvaluationController extends Controller
             ->setLabels(['Not Helpful', 'Helpful'])
             ->setColors(['#f9627d', '#4de38e']);
 
+
         $data = [
-            'class_test' => $class_test,
-            'assignment' => $assignment,
-            'corrections' => $corrections,
-            'test_returned' => $tests_returned,
-            'understanding' => $understanding,
-            'material_available' => $material_available,
-            'well_organized' => $well_organized,
-            'recommend' => $recommend,
-            'meet_expectations' => $meet_expectations,
-            'helpful' => $helpful,
+            'class_test' => ['student' => $class_test, 'lecturer' => $this->lecturerAnswers($lecturers)['class_test']],
+            'assignment' => ['student' => $assignment, 'lecturer' => $this->lecturerAnswers($lecturers)['assignment']],
+            'corrections' => ['student' => $corrections, 'lecturer' => $this->lecturerAnswers($lecturers)['corrections']],
+            'test_returned' => ['student' => $tests_returned, 'lecturer' => $this->lecturerAnswers($lecturers)['test_returned']],
+            'understanding' => ['student' => $understanding, 'lecturer' => $this->lecturerAnswers($lecturers)['understanding']],
+            'material_available' => ['student' => $material_available, 'lecturer' => $this->lecturerAnswers($lecturers)['material_available']],
+            'well_organized' => ['student' => $well_organized, 'lecturer' => $this->lecturerAnswers($lecturers)['well_organized']],
+            'recommend' => ['student' => $recommend, 'lecturer' => $this->lecturerAnswers($lecturers)['recommend']],
+            'meet_expectations' => ['student' => $meet_expectations, 'lecturer' => $this->lecturerAnswers($lecturers)['meet_expectations']],
+            'helpful' => ['student' => $helpful, 'lecturer' => $this->lecturerAnswers($lecturers)['helpful']],
         ];
 
-        return view('hod.evaluations.show', compact('course', 'data', 'studentEv'));
+        $test = ['one' => 1, 'two' => 2, 'three' => 8, 'two_again' => 2];
+
+        $big = 0;
+        foreach ($test as $key => $val) {
+            if ($val > $big){
+                $big = $val;
+            }
+        }
+
+//        dd($big);
+        $summary = $this->studentSummary($students);
+
+        return view('hod.evaluations.show', compact('course', 'data', 'studentEv', 'summary'));
+    }
+
+    public function lecturerAnswers($lecturers)
+    {
+
+        if ($lecturers != null){
+            if ($lecturers->class_test === 1){
+                $class_test = "Not Done";
+            }
+            else{
+                $class_test = "Done";
+            }
+
+            if ($lecturers->assignment === 1){
+                $assignment = "Not Done";
+            }
+            else{
+                $assignment = "Done";
+            }
+
+            if ($lecturers->corrections === 1){
+                $corrections = "Not Done";
+            }
+            else{
+                $corrections = "Done";
+            }
+
+            if ($lecturers->test_returned === 1){
+                $test_returned = "Never";
+            }
+            elseif ($lecturers->test_returned === 2){
+                $test_returned = "Rarely";
+            }
+            elseif ($lecturers->test_returned === 3){
+                $test_returned = "Sometimes";
+            }
+            elseif ($lecturers->test_returned === 4){
+                $test_returned = "Frequently";
+            }
+            else{
+                $test_returned = "Always";
+            }
+
+            if ($lecturers->understanding === 1){
+                $understanding = "Not Understood";
+            }
+            elseif ($lecturers->understanding === 1){
+                $understanding = "Not Understood";
+            }
+            else{
+                $understanding = "Understood";
+            }
+
+            if ($lecturers->material_available === 1){
+                $material_available = "Not Available";
+            }
+            else{
+                $material_available = "Available";
+            }
+
+            if ($lecturers->well_organized === 1){
+                $well_organized = "Not Organized";
+            }
+            else{
+                $well_organized = "Organized";
+            }
+
+            if ($lecturers->recommend === 1){
+                $recommend = "No";
+            }
+            else{
+                $recommend = "Yes";
+            }
+
+            if ($lecturers->meet_expectations === 1){
+                $meet_expectations = "No";
+            }
+            else{
+                $meet_expectations = "Yes";
+            }
+
+            if ($lecturers->helpful === 1){
+                $helpful = "Not Helpful";
+            }
+            else{
+                $helpful = "Helpful";
+            }
+
+            return $lecturer_answers = [
+                'class_test' => $class_test,
+                'assignment' => $assignment,
+                'corrections' => $corrections,
+                'test_returned' => $test_returned,
+                'understanding' => $understanding,
+                'material_available' => $material_available,
+                'well_organized' => $well_organized,
+                'recommend' => $recommend,
+                'meet_expectations' => $meet_expectations,
+                'helpful' => $helpful,
+            ];
+        }
+        return $lecturer_answers = [
+            'class_test' => "Unevaluated",
+            'assignment' => "Unevaluated",
+            'corrections' => "Unevaluated",
+            'test_returned' => "Unevaluated",
+            'understanding' => "Unevaluated",
+            'material_available' => "Unevaluated",
+            'well_organized' => "Unevaluated",
+            'recommend' => "Unevaluated",
+            'meet_expectations' => "Unevaluated",
+            'helpful' => "Unevaluated",
+        ];
+    }
+
+    public function studentSummary($students)
+    {
+        $ct_yes = $students->where('class_test', 2)->count();
+        $ct_no = $students->where('class_test', 1)->count();
+        $class_test = $ct_no > $ct_yes ? " No " : "Yes";
+
+        $as_yes = $students->where('assignment', 2)->count();
+        $as_no = $students->where('assignment', 1)->count();
+        $assignment = $as_no > $as_yes ? " No " : "Yes";
+
+        $co_yes = $students->where('class_test', 2)->count();
+        $co_no = $students->where('class_test', 1)->count();
+        $correction = $co_no > $co_yes ? " No " : "Yes";
+
+        $array = [
+          'tr_n' => $students->where('test_returned', 1)->count(),
+          'tr_r' => $students->where('test_returned', 2)->count(),
+          'tr_s' => $students->where('test_returned', 3)->count(),
+          'tr_f' => $students->where('test_returned', 4)->count(),
+          'tr_a' => $students->where('test_returned', 5)->count(),
+        ];
+
+        $maxval = 0;
+        foreach ($array as $key => $val){
+            if($val > $maxval){
+                $maxval = $val;
+            }
+        }
+
+        if($maxval === 1 ){
+            $test_returned = "Never";
+        }
+        elseif ($maxval === 2 ){
+            $test_returned = "Rarely";
+        }
+        elseif ($maxval === 3 ){
+            $test_returned = "Sometimes";
+        }
+        elseif ($maxval === 4 ){
+            $test_returned = "Frequently";
+        }
+        elseif ($maxval === 5 ){
+            $test_returned = "Always";
+        }
+
+        $under_n = $students->where('test_returned', 1)->count();
+        $tr_r = $students->where('test_returned', 2)->count();
+        $tr_s = $students->where('test_returned', 3)->count();
+
+        return [
+            'class_test' => $class_test,
+            'assignment' => $assignment,
+            'correction' => $correction,
+            'test_returned' => $test_returned,
+        ];
+        $ct_yes = $students->where('class_test', 2)->count();
+        $ct_no = $students->where('class_test', 1)->count();
+        $class_test = $ct_no > $ct_yes ? " No " : "Yes";
+        dd($correction);
     }
 
     public function update(Request $request, $id)

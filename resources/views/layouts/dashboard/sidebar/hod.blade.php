@@ -33,9 +33,9 @@
     </a>
 </li>
 
-<li class="nav-item">
-    <a class="nav-link" href="comments.html">
-        <span class="nav-icon"><i class="fa fa-comments"></i></span>
-            <span class="nav-link-text">Comments</span>
-    </a>
-</li>
+{{--<li class="nav-item">--}}
+{{--    <a class="nav-link" href="comments.html">--}}
+{{--        <span class="nav-icon"><i class="fa fa-comments"></i></span>--}}
+{{--            <span class="nav-link-text">Comments</span>--}}
+{{--    </a>--}}
+{{--</li>--}}

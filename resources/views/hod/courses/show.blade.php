@@ -57,9 +57,9 @@
                             <input type="hidden" name="course_id" value="{{$course->id}}">
                             <div class="form-group mb-3">
                                 <label for="">Select a lecturer</label>
-                                <select name="lecturer_id" id="lecturer_id" class="form-control my-2 programme_id">
+                                <select name="lecturer_id[]" id="lecturer_id" class="form-control my-2 programme_id" multiple="multiple">
                                     @forelse($lecturers as $lecturer)
-                                        <option value="{{$lecturer->id}}" @if(old('programme_id') == $lecturer->id) selected @endif>{{$loop->iteration.". ".$lecturer->first_name." ".$lecturer->last_name}}</option>
+                                        <option value="{{$lecturer->id}}" @if(old('lecturer_id') == $lecturer->id) selected @endif>{{$loop->iteration.". ".$lecturer->first_name." ".$lecturer->last_name}}</option>
                                     @empty
                                         <option disabled>No lecturer in your department yet!</option>
                                     @endforelse

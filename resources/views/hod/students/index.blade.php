@@ -20,6 +20,7 @@
         <div class="col-12 col-md-12">
             <div class="app-card app-card-settings shadow-sm p-4">
                 <div class="app-card-body">
+
                     @forelse($students->groupBy('programme_id') as $student_by_programme)
                         <h4>
                             <a class="btn btn-primary w-100" data-toggle="collapse" href="#{{$student_by_programme->first()->programme->abbreviation}}" >
@@ -54,13 +55,13 @@
                                                     </td>
                                                 </tr>
                                             @empty
+                                                <p>None</p>
                                             @endforelse
                                         </tbody>
                                     </table>
                                 </div>
                             </div>
                         </div>
-
                     @empty
                     @endforelse
 

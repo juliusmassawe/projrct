@@ -5,7 +5,9 @@ namespace App\Http\Controllers\HOD;
 use App\Http\Controllers\Controller;
 use App\Models\Programme;
 use App\Models\Student\Student;
+use Dompdf\Dompdf;
 use Illuminate\Http\Request;
+use PDF;
 
 class StudentController extends Controller
 {
@@ -15,11 +17,16 @@ class StudentController extends Controller
         $programmes = Programme::where('department_id', auth()->user()->head_of_department->department_id)->get('id')->toArray();
 
         $students = Student::whereIn('programme_id', $programmes)->get();
-
         return view('hod.students.index', compact('students'));
 
     }
 
+    public function downloadPDF()
+    {
+        $students = new Dompdf();
+
+
+    }
     /**
      * Show the form for creating a new resource.
      *

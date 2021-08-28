@@ -20,6 +20,7 @@ class RoleSeeder extends Seeder
             ['name' => 'Lecturer'],
             ['name' => 'HOD'],
             ['name' => 'DVC-A'],
+            ['name' => 'QA'],
         ];
 
         foreach ($roles as $role){

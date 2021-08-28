@@ -127,7 +127,7 @@
                                             <tr class="@error('test_returned') bg-danger @enderror">
                                                 <td>4</td>
                                                 <td>
-                                                    <label for="test_returned">Return of tests & Assignements: </label>
+                                                    <label for="test_returned">Return of tests & Assignments: </label>
                                                 </td>
                                                 <td>
                                                     <div class="ml-3">
@@ -217,7 +217,7 @@
                                             <tr class="@error('recommend') bg-danger @enderror">
                                                 <td>8</td>
                                                 <td>
-                                                    <label for="recommend">Would you recommend this course to the comming students?</label>
+                                                    <label for="recommend">Would you recommend this course to the coming students?</label>
                                                 </td>
                                                 <td>
                                                     <div class="ml-3">

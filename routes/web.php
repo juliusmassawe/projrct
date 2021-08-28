@@ -38,6 +38,8 @@ Route::group(['middleware' => 'auth'], function (){
         Route::resource('students', \App\Http\Controllers\HOD\StudentController::class);
         Route::resource('courses', \App\Http\Controllers\HOD\CourseController::class);
         Route::get('evaluations/{programme}/{year}/view', [\App\Http\Controllers\HOD\EvaluationController::class, 'view'])->name('view.evaluation');
+        Route::get('evaluations/pdf', [\App\Http\Controllers\HOD\PdfController::class, 'download'])->name('evaluation.pdf');
+
         Route::resource('evaluations', \App\Http\Controllers\HOD\EvaluationController::class);
         Route::resource('schedule', \App\Http\Controllers\CourseController::class);
 
@@ -57,5 +59,9 @@ Route::group(['middleware' => 'auth'], function (){
         Route::resource('evaluations', \App\Http\Controllers\Lecturer\LecturerEvaluationController::class);
     });
 
+});
+
+Route::get('test', function (){
+//
 });
 

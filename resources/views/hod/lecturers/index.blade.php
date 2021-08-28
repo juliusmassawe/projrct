@@ -53,6 +53,9 @@
                             @endforelse
 							</tbody>
 						</table>
+                            <div class="mt-2 d-flex justify-content-center">
+                                {{$lecturers->links()}}
+                            </div>
 						</div>
 					</form>
 				</div><!--//app-card-body-->

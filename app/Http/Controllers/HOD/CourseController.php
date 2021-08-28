@@ -49,9 +49,10 @@ class CourseController extends Controller
 
     public function update(Request $request, Course $course)
     {
+
         $request->validate(['lecturer_id' => 'required', ['lecturer_id.required'=>'Please select a lecturer to assign this course']]);
 
-        $course->lecturers()->attach($request->lecturer_id, ['academic_year' => date('Y', strtotime('-1 year')) . '/' . date('Y')]);
+        $course->lecturers()->attach($request->lecturer_id, ['academic_year' => session()->get('academic_year')]);
 
         return back()->with('success', 'Lecturer assigned');
     }

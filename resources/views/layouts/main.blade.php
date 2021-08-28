@@ -7,7 +7,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="shortcut icon" href="{{asset('auth/images/mocu.svg')}}" type="image/x-icon">
+    <link rel="shortcut icon" href="{{asset('assets/images/ces.png')}}" type="image/x-icon">
     <!-- FontAwesome JS-->
     <script defer src="{{asset('assets/plugins/fontawesome/js/all.min.js')}}"></script>
     <link rel="stylesheet" href="{{asset('css/all.min.css')}}">
@@ -63,7 +63,7 @@
 	        <div class="sidepanel-inner d-flex flex-column">
 		        <a href="#" id="sidepanel-close" class="sidepanel-close d-xl-none">&times;</a>
 		        <div class="app-branding">
-		            <a class="app-logo" href="index.html"><img src="{{asset('auth/images/mocu.svg')}}" width="50px"><span class="logo-text"> CES | {{auth()->user()->role->name}}</span></a>
+		            <a class="app-logo" href="index.html"><img src="{{asset('assets/images/ces.png')}}" width="75px"><span class="logo-text"> CES | {{auth()->user()->role->name}}</span></a>
 
 		        </div><!--//app-branding-->
 		        @include('layouts.dashboard.sidebar.index')
@@ -86,14 +86,14 @@
     <!-- Javascript -->
     <script src="{{asset('assets/plugins/popper.min.js')}}"></script>
     <script src="{{asset('assets/plugins/bootstrap/js/bootstrap.min.js')}}"></script>
-    <script src="{{asset('js/jquery-3.6.0.min.js')}}"></script>
+{{--    <script src="{{asset('js/jquery-3.6.0.min.js')}}"></script>--}}
 
     <!-- Charts JS -->
-    <script src="{{asset('assets/plugins/chart.js/chart.min.js')}}"></script>
-    <script src="{{asset('assets/js/index-charts.js')}}"></script>
+{{--    <script src="{{asset('assets/plugins/chart.js/chart.min.js')}}"></script>--}}
+{{--    <script src="{{asset('assets/js/index-charts.js')}}"></script>--}}
 
     <!-- Page Specific JS -->
-    <script src="{{asset('assets/js/app.js')}}"></script>
+{{--    <script src="{{asset('assets/js/app.js')}}"></script>--}}
     @yield('scripts')
 </body>
 </html>
