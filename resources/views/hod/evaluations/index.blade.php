@@ -10,7 +10,7 @@
         <div class="col-12 col-md-12">
             <div class="app-card app-card-settings shadow-sm p-4">
                 <div class="app-card-body text-center">
-                    <h3>Course Evaluations</h3>
+                    <h3>Current Evaluations</h3>
                     <p class="">Academic Year: <span class="badge badge-info">{{date('Y', strtotime('-1 year')) . '/' . date('Y')}}</span></p>
                 </div>
             </div>
@@ -36,6 +36,50 @@
                         </div>
                     </div>
                 @endforelse
+            </div>
+        </div>
+
+        <div class="col-12 col-md-12">
+            <div class="app-card app-card-settings shadow-sm p-4">
+                <div class="app-card-body">
+                    <h3 class="text-center">Search Evaluations</h3>
+                    <form action="{{route('hod.search.evaluation')}}" method="POST">
+                        @csrf
+                        <div class="row">
+                            <div class="form-group col-md-3">
+                                <label for="programme">Programme:</label>
+                                <select name="programme_id" id="" class="form-control">
+                                    <option selected disabled>...</option>
+                                    @forelse($programmes as $programme)
+                                        <option value="{{$programme->id}}" {{old('programme_id') == $programme->id ? 'selected' : ' '}}>{{$programme->abbreviation}}</option>
+                                    @empty
+                                    @endforelse
+                                </select>
+                            </div>
+
+                            <div class="form-group col-md-2">
+                                <label>Year: </label>
+                                <input type="number" name="year" value="{{old('year')}}" class="form-control">
+                            </div>
+                            <div class="form-group col-md-2">
+                                <label>Semester</label>
+                                <select name="semester" class="form-control">
+                                    <option selected disabled>...</option>
+                                    <option value="1" {{old('semester') == 1 ? 'selected' : ' '}}>1</option>
+                                    <option value="2" {{old('semester') == 2 ? 'selected' : ' '}}>2</option>
+                                </select>
+                            </div>
+                            <div class="form-group col-md-3">
+                                <label>Academic Year: <small><i>(E.g 2021/2022)</i></small></label>
+                                <input type="text" name="academic_year" value="{{old('academic_year')}}" class="form-control">
+                            </div>
+                            <div class="form-group col-md-2 ">
+                                <label> Search </label>
+                                <button class="btn btn-info w-100">Search</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
             </div>
         </div>
 

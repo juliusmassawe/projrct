@@ -37,11 +37,16 @@ Route::group(['middleware' => 'auth'], function (){
         Route::resource('lecturers', \App\Http\Controllers\HOD\LecturerController::class);
         Route::resource('students', \App\Http\Controllers\HOD\StudentController::class);
         Route::resource('courses', \App\Http\Controllers\HOD\CourseController::class);
-        Route::get('evaluations/{programme}/{year}/view', [\App\Http\Controllers\HOD\EvaluationController::class, 'view'])->name('view.evaluation');
+        Route::get('evaluations/{programme}/{year}/view', [\App\Http\Controllers\HOD\EvaluationController::class, 'currentEvaluations'])->name('view.evaluation');
+        Route::post('evaluations/search', [\App\Http\Controllers\HOD\EvaluationController::class, 'search'])->name('search.evaluation');
+        Route::get('evaluations/{course}/{year}/print', [\App\Http\Controllers\HOD\PdfController::class, 'print'])->name('print.evaluation');
+        Route::get('evaluations/{course}/{year}/download', [\App\Http\Controllers\HOD\PdfController::class, 'download'])->name('download.evaluation');
         Route::get('evaluations/pdf', [\App\Http\Controllers\HOD\PdfController::class, 'download'])->name('evaluation.pdf');
 
         Route::resource('evaluations', \App\Http\Controllers\HOD\EvaluationController::class);
         Route::resource('schedule', \App\Http\Controllers\CourseController::class);
+
+        //PDF routes
 
     });
 
@@ -50,6 +55,8 @@ Route::group(['middleware' => 'auth'], function (){
         Route::resource('dashboard', \App\Http\Controllers\Student\StudentController::class);
         Route::resource('courses', \App\Http\Controllers\Student\CourseController::class)->only('index', 'show');
         Route::resource('evaluations', \App\Http\Controllers\Student\StudentEvaluationController::class);
+        Route::get('summary/download/{summary}/{slug}', [\App\Http\Controllers\Student\SummaryController::class, 'download'])->name('download.summary');
+
     });
 
     //Lecturer Routes
@@ -57,11 +64,11 @@ Route::group(['middleware' => 'auth'], function (){
         Route::resource('dashboard', \App\Http\Controllers\Lecturer\LecturerController::class);
         Route::resource('courses', \App\Http\Controllers\Lecturer\CourseController::class);
         Route::resource('evaluations', \App\Http\Controllers\Lecturer\LecturerEvaluationController::class);
+        Route::get('summary/download/{summary}/{slug}', [\App\Http\Controllers\Lecturer\SummaryController::class, 'download'])->name('download.summary');
+        Route::resource('summary', \App\Http\Controllers\Lecturer\SummaryController::class);
     });
 
 });
 
-Route::get('test', function (){
-//
-});
+Route::get('test', [\App\Http\Controllers\HOD\PdfController::class, 'download']);
 

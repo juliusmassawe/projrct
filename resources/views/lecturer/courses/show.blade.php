@@ -42,7 +42,54 @@
 
                     <div class="collapse multi-collapse" id="course-summary">
                         <div class="card card-body my-4">
-                            <p class="text-center">Post Information about this course</p>
+                            @if($summary)
+                                <h4 class="text-center mb-4">Summary or notes about this course:</h4>
+                                <div class="row d-flex justify-content-end">
+
+                                    <a href="{{route('lecturer.summary.edit', $summary)}}" class="btn btn-primary w-25">Edit</a>
+                                </div>
+
+                                @if($summary->notes)
+                                    <p> {!! $summary->notes !!}</p>
+                                @endif
+
+                                @if($summary->document)
+                                <p><a href="{{route('lecturer.download.summary', [$summary, \Illuminate\Support\Str::slug($course->ante . ' ' . $course->name)])}}" class="btn btn-sm btn-outline-success">Download Document</a></p>
+                                @endif
+
+                            @else
+                                <form method="post" action="{{route('lecturer.summary.store')}}" enctype="multipart/form-data">
+                                    @csrf
+                                    <h4 class="text-center mb-4">Type the course summary or notes about this course</h4>
+
+                                    <input type="hidden" name="course_id" value="{{$course->id}}">
+                                    <input type="hidden" name="lecturer_id" value="{{$lecturer->id}}">
+
+                                    <div class="form-group">
+                                        <textarea class="ckeditor form-control" name="notes"></textarea>
+                                    </div>
+                                    @error('notes')
+                                    <span class="invalid-feedback" role="alert">
+                                    <strong>{{ $message }}</strong>
+                                </span>
+                                    @enderror
+                                    <hr>
+                                    <h4 class="text-center mb-4">Or upload pdf/word document containing the course summary</h4>
+                                    <div class="form-group d-flex justify-content-center">
+                                        <input type="file" name="document"> <br>
+                                        @error('document')
+                                        <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                        @enderror
+                                    </div>
+                                    <hr>
+                                    <div class="d-flex justify-content-center">
+                                        <button class="btn btn-success w-50 text-center">Save summary</button>
+                                    </div>
+                                </form>
+                            @endif
+
                         </div>
                     </div>
                     @if($course->taught == 1)
@@ -304,4 +351,13 @@
                 </div>
             </div>
         </div>
+@endsection
+
+@section('scripts')
+    <script src="//cdn.ckeditor.com/4.14.1/standard/ckeditor.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('.ckeditor').ckeditor();
+        });
+    </script>
 @endsection

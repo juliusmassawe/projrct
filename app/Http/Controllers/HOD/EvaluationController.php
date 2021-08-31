@@ -22,16 +22,46 @@ class EvaluationController extends Controller
         return view('hod.evaluations.index', compact( 'programmes'));
     }
 
-    public function view(Programme $programme, $year)
+    public function search(Request $request)
     {
-       $courses =  $programme->courses->where('semester', $this->current_semester())->where('year', $year);
+
+        $request->validate([
+            'programme_id' => 'required',
+            'academic_year' => 'required',
+            'year' => 'required|int|max:3|min:1',
+            'semester' => 'required',
+        ]);
+
+        $programme = Programme::find($request->programme_id);
+
+        if ($request->year > $programme->no_of_semesters/2){
+            return back()->with('fail', 'Incorrect number of semesters');
+        }
+
+        $courses = $programme->courses->where('semester', $request->semester)->where('year', $request->year);
+        $academic_year = $request->academic_year;
+
+        return $this->view($courses, $academic_year, $programme);
+
+    }
+
+    public function currentEvaluations(Programme $programme, $year)
+    {
+        $courses =  $programme->courses->where('semester', $this->current_semester())->where('year', $year);
+        $academic_year = session()->get('academic_year');
+
+       return $this->view($courses, $academic_year, $programme);
+    }
+
+    public function view($courses, $academic_year, $programme)
+    {
 
         $studentEv=[];
         $lecturerEv = [];
 
         foreach ($courses as $course) {
-            $evaluations = $course->studentEvaluations->where('academic_year', session()->get('academic_year'))->count();
-            $students = $programme->students()->where('current_semester', $course->sem)->where('current_academic_year', $this->current_academic_year())->count();
+            $evaluations = $course->studentEvaluations->where('academic_year', $academic_year)->count();
+            $students = $programme->students()->where('current_semester', $course->sem)->where('current_academic_year', $academic_year)->count();
 
             if ($students > 0){
                 $studentEv[$course->id] = $evaluations/$students * 100;
@@ -40,11 +70,13 @@ class EvaluationController extends Controller
                 $studentEv[$course->id] = 0;
             }
 
-           $lecturerEv[$course->id] = $course->LecturerEvaluations->where('academic_year', session()->get('academic_year'))->count();
+           $lecturerEv[$course->id] = $course->LecturerEvaluations->where('academic_year', $academic_year)->count();
 
         }
 
-        return view('hod.evaluations.view', compact('courses', 'programme', 'studentEv', 'lecturerEv'));
+        $semester = $courses->first()->sem;
+
+        return view('hod.evaluations.view', compact('courses', 'programme', 'studentEv', 'lecturerEv', 'academic_year', 'semester'));
     }
 
     public function show($id)
@@ -293,7 +325,7 @@ class EvaluationController extends Controller
                 $maxval = $val;
             }
         }
-
+        $test_returned = '';
         if($maxval === 1 ){
             $test_returned = "Never";
         }

@@ -52,4 +52,9 @@ class Course extends Model
     {
         return $this->hasMany(LecturerEvaluation::class);
     }
+
+    public function summaries()
+    {
+        return $this->hasMany(\App\Models\Lecturer\Summary::class);
+    }
 }

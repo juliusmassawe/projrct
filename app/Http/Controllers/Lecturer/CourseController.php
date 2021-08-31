@@ -22,7 +22,9 @@ class CourseController extends Controller
     {
         $lecturer = auth()->user()->lecturer;
 
-        return view('lecturer.courses.show', compact('course', 'lecturer'));
+        $summary = $course->summaries->where('academic_year', $this->current_academic_year())->first();
+
+        return view('lecturer.courses.show', compact('course', 'lecturer', 'summary'));
 
     }
 

@@ -33,7 +33,9 @@ class CourseController extends Controller
             abort(403);
         }
 
-        return view('student.courses.show', compact('course', 'student'));
+        $summary = $course->summaries->where('academic_year', $this->current_academic_year())->first();
+
+        return view('student.courses.show', compact('course', 'student', 'summary'));
     }
 }
 

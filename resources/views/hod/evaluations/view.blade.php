@@ -12,8 +12,8 @@
                 <div class="app-card-body text-center">
                     <h3>{{$programme->name}}</h3>
                     <p class="">
-                        Academic Year: <span class="badge badge-info">{{date('Y', strtotime('-1 year')) . '/' . date('Y')}}</span>
-                        Semester: <span class="badge badge-success">{{$courses->first()->sem}}</span>
+                        Academic Year: <span class="badge badge-info">{{$academic_year}}</span>
+                        Semester: <span class="badge badge-success">{{$semester}}</span>
                     </p>
 
                 </div>

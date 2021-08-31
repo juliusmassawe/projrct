@@ -42,10 +42,22 @@
 
                     <div class="collapse multi-collapse" id="course-summary">
                         <div class="card card-body my-4">
+                            @if($summary)
+                                <h4 class="text-center mb-4">Summary or notes about this course:</h4>
+                                @if($summary->notes)
+                                    <p> {!! $summary->notes !!}</p>
+                                @endif
+
+                                @if($summary->document)
+                                    <p><a href="{{route('student.download.summary', [$summary, \Illuminate\Support\Str::slug($course->ante . ' ' . $course->name)])}}" class="btn btn-sm btn-outline-success">Download Document</a></p>
+                                @endif
+
+                            @else
                             <p class="text-center">Information about the course posted by the Lecturer will appear here</p>
+                            @endif
                         </div>
                     </div>
-                    @if($course->taught == 1)
+                    @if($course->taught == 1 && $summary)
                         @if(!$student->evaluation->where('course_id', $course->id)->first())
                             <h4>
                                 <a class="btn btn-info w-100" data-toggle="collapse" href="#course-evaluation" >

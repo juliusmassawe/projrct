@@ -2,28 +2,29 @@
 
 namespace App\Http\Controllers\HOD;
 
-use App\Classes\SMS;
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
-use Barryvdh\DomPDF\PDF;
+use App\Models\User;
+use Illuminate\Support\Facades\App;
 
 class PdfController extends Controller
 {
+    public function print()
+    {
+        return $this->generatePdf()->stream();
+    }
+
     public function download()
     {
-        $phones = [
-            0 => '255786065529',
-            1 => '255620116322',
-        ];
 
+        return $this->generatePdf()->download('evaluations.pdf');
+    }
 
-        $message = "Trying the new sms with custom class :)";
+    public function generatePdf()
+    {
+        $data = User::with('role')->get();
+        $pdf = App::make('dompdf.wrapper');
+        $pdf->loadView('pdf.evaluations', compact('data'));
 
-        $text = new SMS();
-
-        $text->sendSingleSMS('255786065529', $message);
-        $text->sendMultipleSMS($phones, $message);
-
-        return 'success';
+        return $pdf;
     }
 }

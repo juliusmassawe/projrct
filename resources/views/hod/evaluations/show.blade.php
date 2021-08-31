@@ -153,8 +153,8 @@
                                 </div>
 
                                 <div class="mt-2 d-flex justify-content-center">
-                                    <button class="btn btn-info mr-2"><i class="fas fa-print mr-1"></i>Print</button>
-                                    <button class="btn btn-success"><i class="fas fa-download mr-1"></i>Download</button>
+                                    <a href="{{route('hod.print.evaluation', [$course->programme, $course->year])}}" class="btn btn-info mr-2"><i class="fas fa-print mr-1"></i>Print</a>
+                                    <a href="{{route('hod.download.evaluation', [$course->programme, $course->year])}}" class="btn btn-success"><i class="fas fa-download mr-1"></i>Download</a>
                                 </div>
 
                                 <form action="">
