@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Models\Admin\Department;
+use App\Models\HOD\Remark;
 use App\Models\Lecturer\Lecturer;
 use App\Models\Lecturer\LecturerEvaluation;
 use App\Models\Student\Student;
@@ -56,5 +57,10 @@ class Course extends Model
     public function summaries()
     {
         return $this->hasMany(\App\Models\Lecturer\Summary::class);
+    }
+
+    public function remarks()
+    {
+        return $this->hasMany(Remark::class);
     }
 }

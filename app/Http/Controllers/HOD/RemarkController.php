@@ -3,40 +3,28 @@
 namespace App\Http\Controllers\HOD;
 
 use App\Http\Controllers\Controller;
+use App\Models\Course;
 use App\Models\HOD\Remark;
 use Illuminate\Http\Request;
 
 class RemarkController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
-    {
-        //
-    }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'remarks' => 'required'
+        ]);
+
+        $course = Course::findOrFail($request->course_id);
+
+        $course->remarks()->create([
+            'role_id' => auth()->user()->role_id,
+            'remarks' => $request->remarks,
+            'academic_year' => $this->current_academic_year(),
+        ]);
+
+        return back()->with('success', 'Remarks submitted');
     }
 
     /**

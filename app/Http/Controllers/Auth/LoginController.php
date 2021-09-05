@@ -44,6 +44,9 @@ class LoginController extends Controller
         elseif (auth()->user()->role->id == 3){
             return $this->redirectTo = route('lecturer.dashboard.index');
         }
+        elseif (auth()->user()->role->id == 6){
+            return $this->redirectTo = route('qa.index');
+        }
 
     }
     /**

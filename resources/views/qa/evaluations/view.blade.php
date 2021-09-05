@@ -58,7 +58,7 @@
                                     </div>
                                 </td>
                                 <td class="text-center ">
-                                    <a href="{{route('evaluations.show', $course->id)}}" class="btn btn-outline-info btn-sm">View</a>
+                                    <a href="{{route('hod.evaluations.show', $course->id)}}" class="btn btn-outline-info btn-sm">View</a>
                                 </td>
                             </tr>
                             @endforeach

@@ -27,7 +27,7 @@
 </li>
 
 <li class="nav-item">
-    <a class="nav-link" href="{{route('hod.evaluations.index')}}">
+    <a class="nav-link" href="{{route('evaluations.index')}}">
         <span class="nav-icon"><i class="fa fa-table"></i></span>
             <span class="nav-link-text">Evaluation</span>
     </a>

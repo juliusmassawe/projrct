@@ -60,25 +60,28 @@
                                     </tr>
                                 @empty
                                 @endforelse
-                            <tr>
-                                <td colspan="6" class="text-center font-weight-bold">Electives</td>
-                            </tr>
-                            <tr>
-                                <td>1</td>
-                                <td class="text-left">{{$elective->name}}</td>
-                                <td>{{$elective->ante}}</td>
-                                <td>{{$elective->credits}}</td>
-                                <td>
-                                    @if($student->evaluation->where('course_id', $elective->id)->first())
-                                        <span class="badge badge-success">Evaluated</span>
-                                    @else
-                                        <span class="badge badge-danger">Unevaluated</span>
-                                    @endif
-                                </td>
-                                <td>
-                                    <a href="{{route('student.courses.show', $elective->id)}}" class="btn btn-outline-info btn-sm">view</a>
-                                </td>
-                            </tr>
+
+                            @if($elective)
+                                <tr>
+                                    <td colspan="6" class="text-center font-weight-bold">Electives</td>
+                                </tr>
+                                <tr>
+                                    <td>1</td>
+                                    <td class="text-left">{{$elective->name}}</td>
+                                    <td>{{$elective->ante}}</td>
+                                    <td>{{$elective->credits}}</td>
+                                    <td>
+                                        @if($student->evaluation->where('course_id', $elective->id)->first())
+                                            <span class="badge badge-success">Evaluated</span>
+                                        @else
+                                            <span class="badge badge-danger">Unevaluated</span>
+                                        @endif
+                                    </td>
+                                    <td>
+                                        <a href="{{route('student.courses.show', $elective->id)}}" class="btn btn-outline-info btn-sm">view</a>
+                                    </td>
+                                </tr>
+                            @endif
 							</tbody>
 						</table>
 						</div>

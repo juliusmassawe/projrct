@@ -19,5 +19,7 @@
     <small>{{auth()->user()->head_of_department->fullname}}</small>
 @elseif(auth()->user()->role_id == 5)
     DVC-A
+@elseif(auth()->user()->role_id == 6)
+    QA
 @endif
 

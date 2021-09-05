@@ -11,6 +11,7 @@ use ArielMejiaDev\LarapexCharts\BarChart;
 use ArielMejiaDev\LarapexCharts\LarapexChart;
 use ArielMejiaDev\LarapexCharts\PieChart;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\App;
 
 class EvaluationController extends Controller
 {
@@ -18,7 +19,7 @@ class EvaluationController extends Controller
     public function index()
     {
 
-        $programmes = Programme::with('department')->where('department_id' , auth()->user()->head_of_department->department_id)->get();
+        $programmes = Programme::with('department')->where('department_id' , auth()->user()->head_of_department->department_id ?? 1)->get();
         return view('hod.evaluations.index', compact( 'programmes'));
     }
 
@@ -169,19 +170,9 @@ class EvaluationController extends Controller
             'helpful' => ['student' => $helpful, 'lecturer' => $this->lecturerAnswers($lecturers)['helpful']],
         ];
 
-        $test = ['one' => 1, 'two' => 2, 'three' => 8, 'two_again' => 2];
-
-        $big = 0;
-        foreach ($test as $key => $val) {
-            if ($val > $big){
-                $big = $val;
-            }
-        }
-
-//        dd($big);
         $summary = $this->studentSummary($students);
-
-        return view('hod.evaluations.show', compact('course', 'data', 'studentEv', 'summary'));
+        $lecturer_answers = $this->lecturerAnswers($lecturers);
+        return view('hod.evaluations.show', compact('course', 'data', 'studentEv', 'summary', 'lecturer_answers'));
     }
 
     public function lecturerAnswers($lecturers)
@@ -301,15 +292,15 @@ class EvaluationController extends Controller
     {
         $ct_yes = $students->where('class_test', 2)->count();
         $ct_no = $students->where('class_test', 1)->count();
-        $class_test = $ct_no > $ct_yes ? " No " : "Yes";
+        $class_test = $ct_no > $ct_yes ? " Not Done " : "Done";
 
         $as_yes = $students->where('assignment', 2)->count();
         $as_no = $students->where('assignment', 1)->count();
-        $assignment = $as_no > $as_yes ? " No " : "Yes";
+        $assignment = $as_no > $as_yes ? " Not Done " : "Done";
 
         $co_yes = $students->where('class_test', 2)->count();
         $co_no = $students->where('class_test', 1)->count();
-        $correction = $co_no > $co_yes ? " No " : "Yes";
+        $correction = $co_no > $co_yes ? " Not Done " : "Done";
 
         $array = [
           'tr_n' => $students->where('test_returned', 1)->count(),
@@ -326,6 +317,7 @@ class EvaluationController extends Controller
             }
         }
         $test_returned = '';
+
         if($maxval === 1 ){
             $test_returned = "Never";
         }
@@ -342,36 +334,90 @@ class EvaluationController extends Controller
             $test_returned = "Always";
         }
 
-        $under_n = $students->where('test_returned', 1)->count();
-        $tr_r = $students->where('test_returned', 2)->count();
-        $tr_s = $students->where('test_returned', 3)->count();
+        $array2 = [
+            'not' => $students->where('understanding', 1)->count(),
+            'avg' => $students->where('understanding', 2)->count(),
+            'well' => $students->where('understanding', 3)->count(),
+        ];
+
+        $maxval2 = 0;
+        foreach ($array2 as $key => $val){
+            if($val > $maxval2){
+                $maxval2 = $key;
+            }
+        }
+
+        $understood = '';
+        if($maxval2 === "well" ){
+            $understood = "Well Understood";
+        }
+        elseif ($maxval2 === "avg" ){
+            $understood = "Understood";
+        }
+        elseif ($maxval2 === "not" ){
+            $understood = "Not Understood";
+        }
+
+        $ma_yes = $students->where('material_available', 2)->count();
+        $ma_no = $students->where('material_available', 1)->count();
+        $material_available = $ma_no > $ma_yes ? " Not Available " : "Available";
+
+        $rm_no = $students->where('recommend', 1)->count();
+        $rm_yes = $students->where('recommend', 2)->count();
+        $recommend = $rm_no > $rm_yes ? " No " : "Yes";
+
+        $wo_no = $students->where('well_organized', 1)->count();
+        $wo_yes = $students->where('well_organized', 2)->count();
+        $well_organized = $wo_no > $wo_yes ? "Well  Organized" : "Organized";
+
+        $me_no = $students->where('meet_expectations', 1)->count();
+        $me_yes = $students->where('meet_expectations', 2)->count();
+        $meet_expectations = $me_no > $me_yes ? " No " : "Yes";
+
+        $hl_no = $students->where('helpful', 1)->count();
+        $hl_yes = $students->where('helpful', 2)->count();
+        $helpful = $hl_no > $hl_yes ? "Not Helpful" : "Helpful";
 
         return [
             'class_test' => $class_test,
             'assignment' => $assignment,
-            'correction' => $correction,
+            'corrections' => $correction,
             'test_returned' => $test_returned,
+            'understanding' => $understood,
+            'material_available' => $material_available,
+            'well_organized' => $well_organized,
+            'meet_expectations' => $meet_expectations,
+            'recommend' => $recommend,
+            'helpful' => $helpful,
         ];
-        $ct_yes = $students->where('class_test', 2)->count();
-        $ct_no = $students->where('class_test', 1)->count();
-        $class_test = $ct_no > $ct_yes ? " No " : "Yes";
-        dd($correction);
+
     }
 
-    public function update(Request $request, $id)
+    public function print(Course $course, $year)
     {
-        //
+        $students =  $course->studentEvaluations->where('academic_year', session()->get('academic_year'));
+        $lecturers =  $course->lecturerEvaluations->where('academic_year', session()->get('academic_year'))->first();
+
+        return $this->generatePdf($students, $lecturers, $course)->stream();
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
+    public function download(Course $course, $year)
     {
-        //
+        $students =  $course->studentEvaluations->where('academic_year', session()->get('academic_year'));
+        $lecturers =  $course->lecturerEvaluations->where('academic_year', session()->get('academic_year'))->first();
+
+        return $this->generatePdf($students, $lecturers, $course)->download('evaluations.pdf');
+    }
+
+    public function generatePdf($students, $lecturers, $course)
+    {
+        $summary = $this->studentSummary($students);
+        $lecturer_answers = $this->lecturerAnswers($lecturers);
+
+        $pdf = App::make('dompdf.wrapper');
+        $pdf->loadView('pdf.evaluations', compact('summary', 'lecturer_answers', 'course'));
+
+        return $pdf;
     }
 
 }

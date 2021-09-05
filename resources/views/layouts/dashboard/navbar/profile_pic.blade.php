@@ -16,4 +16,6 @@
     <img src="{{asset('auth/images/avatars/default.svg')}}"  class="rounded-circle" alt="" srcset=""></a>
 @elseif(auth()->user()->role_id == 5)
     <img src="{{asset('auth/images/avatars/default.svg')}}"  class="rounded-circle" alt="" srcset=""></a>
+@elseif(auth()->user()->role_id == 6)
+    <img src="{{asset('auth/images/avatars/default.svg')}}"  class="rounded-circle" alt="" srcset=""></a>
 @endif

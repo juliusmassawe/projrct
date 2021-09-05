@@ -153,13 +153,11 @@
                                 </div>
 
                                 <div class="mt-2 d-flex justify-content-center">
-                                    <a href="{{route('print.evaluation', [$course->id, $course->year])}}" class="btn btn-info mr-2"><i class="fas fa-print mr-1"></i>Print</a>
-                                    <a href="{{route('download.evaluation', [$course->id, $course->year])}}" class="btn btn-success"><i class="fas fa-download mr-1"></i>Download</a>
+                                    <a href="{{route('hod.print.evaluation', [$course->id, $course->year])}}" class="btn btn-info mr-2"><i class="fas fa-print mr-1"></i>Print</a>
+                                    <a href="{{route('hod.download.evaluation', [$course->id, $course->year])}}" class="btn btn-success"><i class="fas fa-download mr-1"></i>Download</a>
                                 </div>
 
-
-                             @if(auth()->user()->role_id === 4)
-                                <h4>Remark1s</h4>
+                                <h4>Remarks</h4>
                                 <hr>
                                 @if($course->remarks()->count() > 0)
                                     <h6 class="text-center">Remarks already submitted</h6>
@@ -179,7 +177,6 @@
                                     <button class="btn btn-success">Submit</button>
                                 </form>
                                 @endif
-                             @endif
                             </div>
                         </div>
                     </div>

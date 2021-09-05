@@ -1,7 +1,7 @@
 @extends('layouts.main')
 
 @section('page-title')
-    Students
+
 @endsection
 
 @section('content')
@@ -24,7 +24,7 @@
                             <span class="nav-icon fa-2x">{{$programme->abbreviation}}</span>
                             <div class="app-card-body pb-5">
                                 @for($i = 1 ; $i<=$programme->no_of_semesters/2;  $i++)
-                                <a href="{{route('view.evaluation', [$programme, $i])}}" class="badge badge-info p-2 mt-3 mr-2">Year: {{$i}}</a>
+                                <a href="{{route('hod.view.evaluation', [$programme, $i])}}" class="badge badge-info p-2 mt-3 mr-2">Year: {{$i}}</a>
                                 @endfor
                             </div>
                         </div>
@@ -43,7 +43,7 @@
             <div class="app-card app-card-settings shadow-sm p-4">
                 <div class="app-card-body">
                     <h3 class="text-center">Search Evaluations</h3>
-                    <form action="{{route('search.evaluation')}}" method="POST">
+                    <form action="{{route('hod.search.evaluation')}}" method="POST">
                         @csrf
                         <div class="row">
                             <div class="form-group col-md-3">

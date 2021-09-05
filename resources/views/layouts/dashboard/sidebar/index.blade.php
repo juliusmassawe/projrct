@@ -9,6 +9,8 @@
             @include('layouts.dashboard.sidebar.lecturer')
         @elseif(auth()->user()->role->name == "Student")
             @include('layouts.dashboard.sidebar.student')
+        @elseif(auth()->user()->role->name == "QA")
+            @include('layouts.dashboard.sidebar.qa')
         @endif
     </ul><!--//app-menu-->
 </nav><!--//app-nav-->

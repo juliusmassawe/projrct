@@ -8,4 +8,6 @@ use Illuminate\Database\Eloquent\Model;
 class Remark extends Model
 {
     use HasFactory;
+
+    protected $fillable = ['course_id', 'role_id', 'remarks', 'academic_year'];
 }
